@@ -2,14 +2,6 @@
 ZSH=~/.oh-my-zsh
 plugins=(brew common-aliases docker docker-compose git git-flow git-hubflow github mix osx tig web-search)
 source $ZSH/oh-my-zsh.sh
-
-# Exports
-export FZF_DEFAULT_COMMAND='ag --hidden --ignore .git --ignore _build --ignore deps --ignore node_modules -g ""'
-export ICLOUD_DRIVE="/Users/AlvaroLizama/Library/Mobile Documents/com~apple~CloudDocs/"
-export LC_ALL=en_US.UTF-8
-export PATH="/usr/local/opt/node@10/bin:$HOME/.mix/escripts:$PATH"
-
-# Sources
 source $HOME/.extra.sh
 
 # Direnv
@@ -22,5 +14,4 @@ BASE16_SHELL="$HOME/.config/base16-shell/"
 [ -n "$PS1" ] && \
     [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
         eval "$("$BASE16_SHELL/profile_helper.sh")"
-
 

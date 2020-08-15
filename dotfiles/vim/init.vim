@@ -136,7 +136,7 @@ set ttyfast
 set lazyredraw
 set ttyscroll=3
 set regexpengine=1
-set synmaxcol=128
+set synmaxcol=256
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
