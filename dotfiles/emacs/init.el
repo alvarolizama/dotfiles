@@ -91,12 +91,14 @@
   (menu-bar-mode 1))
 
 (use-package doom-themes
+  :ensure t
   :config
   (setq doom-themes-enable-bold t
         doom-themes-enable-italic t)
   (load-theme 'doom-tomorrow-night t))
 
 (use-package zoom-window
+  :ensure t
   :config
   (global-set-key (kbd "C-x C-z") 'zoom-window-zoom)
   (custom-set-variables
@@ -185,6 +187,7 @@
   :hook (after-init . global-company-mode))
 
 (use-package multi-vterm
+  :ensure t
   :config
   (setq system-uses-terminfo nil
       multi-term-program "/bin/zsh"
@@ -217,6 +220,7 @@
   (add-hook 'term-mode-hook '(lambda () (toggle-truncate-lines 1))))
 
 (use-package org-bullets
+  :ensure t
   :config
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
@@ -226,10 +230,12 @@
   (global-git-gutter-mode 1))
 
 (use-package autopair
+  :ensure t
   :config
   (autopair-global-mode))
 
 (use-package yasnippet
+  :ensure t
   :config
   (yas-global-mode 1))
 
@@ -255,6 +261,24 @@
   (which-key-mode)
   (which-key-setup-minibuffer))
 
+(use-package counsel
+  :ensure t)
+
+(use-package magit
+  :ensure t)
+
+(use-package magithub
+  :ensure t)
+
+(use-package treemacs-evil
+  :ensure t)
+
+(use-package treemacs-magit
+  :ensure t)
+
+(use-package treemacs-all-the-icons
+  :ensure t)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -272,7 +296,7 @@
     ("~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/Notes/projects.org" "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/Notes/manuales.org" "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/Notes/inbox.org" "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/Notes/howtos.org" "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/Notes/blogs.org" "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/Notes/notes.org" "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/Notes/agenda.org")))
  '(package-selected-packages
    (quote
-    (org-bullets magithub multi-vterm vterm elixir-yasnippets yasnippet-snippets autopair yasnippet dashboard treemacs-projectile treemacs-magit treemacs-evil treemacs projectile-direnv projectile ghub git-gutter elixir-mode web-mode markdown-mode helm evil-leader evil-nerd-commenter evil company exec-path-from-shell counsel zoom-window magit doom-themes doom-modeline pbcopy better-defaults use-package)))
+    (treemacs-all-the-icons org-bullets magithub multi-vterm vterm elixir-yasnippets yasnippet-snippets autopair yasnippet dashboard treemacs-magit treemacs-evil treemacs projectile git-gutter elixir-mode web-mode markdown-mode helm evil-leader evil-nerd-commenter evil company exec-path-from-shell counsel-fzf counsel-ag counsel zoom-window magit doom-themes doom-modeline pbcopy better-defaults use-package)))
  '(projectile-completion-system (quote helm))
  '(projectile-keymap-prefix "p")
  '(projectile-switch-project-action (quote helm-ls-git-ls))
