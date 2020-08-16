@@ -78,6 +78,21 @@
 (setq default-input-method "spanish-prefix")
 
 
+;; Keymaps
+(global-set-key (kbd "C-c t") 'multi-vterm)
+(global-set-key (kbd "C-c n") 'multi-vterm-next)
+(global-set-key (kbd "C-c p") 'multi-vterm-prev)
+
+
+(setq backup-by-copying t      ; don't clobber symlinks
+      backup-directory-alist '(("." . "~/.emacs-saves/"))    ; don't litter my fs tree
+      delete-old-versions t
+      kept-new-versions 6
+      kept-old-versions 2
+      version-control t)       ; use versioned backups
+(setq auto-save-file-name-transforms
+      `((".*" "~/.emacs-saves/" t)))
+
 ;; Packages
 (use-package exec-path-from-shell
   :ensure t
@@ -176,6 +191,8 @@
       "p" 'treemacs
       "d" 'make-directory
       "f" 'find-file
+      "z" 'zoom-window-zoom
+      "n" 'zoom-window-next
       )))
 
 (use-package company
@@ -218,6 +235,7 @@
                                       ("M-s" . term-send-forward-kill-word)))
                             (add-to-list 'term-bind-key-alist bind))))
   (add-hook 'term-mode-hook '(lambda () (toggle-truncate-lines 1))))
+
 
 (use-package org-bullets
   :ensure t

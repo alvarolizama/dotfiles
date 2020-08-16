@@ -1,10 +1,11 @@
 # This is Git's per-user configuration file.
 [user]
-# Please adapt and uncomment the following lines:
-name = Alvaro Lizama
+        name = Alvaro Lizama
 	email = me@alvarolizama.net
 [core]
 	excludesfile = ~/.gitignore
 	editor = /usr/bin/vim
 [commit]
 	gpgsign = true
+[github]
+	user = alvarolizama
