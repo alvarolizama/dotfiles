@@ -77,21 +77,18 @@
 ;; Spanish Layout
 (setq default-input-method "spanish-prefix")
 
+;; Backup and Autosave Directories
+(setq temporary-file-directory "~/.tmp/")
+(setq backup-directory-alist
+      `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
 
 ;; Keymaps
 (global-set-key (kbd "C-c t") 'multi-vterm)
 (global-set-key (kbd "C-c n") 'multi-vterm-next)
 (global-set-key (kbd "C-c p") 'multi-vterm-prev)
 
-
-(setq backup-by-copying t      ; don't clobber symlinks
-      backup-directory-alist '(("." . "~/.emacs-saves/"))    ; don't litter my fs tree
-      delete-old-versions t
-      kept-new-versions 6
-      kept-old-versions 2
-      version-control t)       ; use versioned backups
-(setq auto-save-file-name-transforms
-      `((".*" "~/.emacs-saves/" t)))
 
 ;; Packages
 (use-package exec-path-from-shell
