@@ -6,11 +6,10 @@
   (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
   )
 
-(setq package-check-signature nil)
+  (package-refresh-contents)
+  (package-install 'use-package)
 
-(package-initialize)
-(package-refresh-contents)
-(package-install 'use-package)
+(setq package-check-signature nil)
 
 (when (not package-archive-contents)
   (package-refresh-contents))
@@ -77,17 +76,11 @@
 ;; Spanish Layout
 (setq default-input-method "spanish-prefix")
 
-;; Backup and Autosave Directories
-(setq temporary-file-directory "~/.tmp/")
-(setq backup-directory-alist
-      `((".*" . ,temporary-file-directory)))
-(setq auto-save-file-name-transforms
-      `((".*" ,temporary-file-directory t)))
+;; Disable backup
+(setq backup-inhibited t)
 
-;; Keymaps
-(global-set-key (kbd "C-c t") 'multi-vterm)
-(global-set-key (kbd "C-c n") 'multi-vterm-next)
-(global-set-key (kbd "C-c p") 'multi-vterm-prev)
+;; Disable auto save
+(setq auto-save-default nil)
 
 
 ;; Packages
@@ -130,7 +123,7 @@
 (use-package dashboard
   :ensure t
   :config
-  (setq dashboard-banner-logo-title "Welcome to a coding session!")
+  (setq dashboard-banner-logo-title "Welcome to a new coding session!")
   (setq dashboard-center-content t)
   (setq dashboard-startup-banner 'logo)
   (setq dashboard-set-footer nil)
@@ -184,7 +177,7 @@
       "'" 'magit
       "a" 'org-agenda
       "r" 'counsel-bookmark
-      "t" 'multi-vterm-dedicated-toggle
+      "t" 'multi-vterm-projectile
       "p" 'treemacs
       "d" 'make-directory
       "f" 'find-file
@@ -294,6 +287,16 @@
 (use-package treemacs-all-the-icons
   :ensure t)
 
+(use-package easy-hugo
+  :ensure t
+  :init
+  (setq easy-hugo-basedir "~/Documents/Blog/")
+  (setq easy-hugo-postdir "content/posts")
+  (setq easy-hugo-url "https://alvarolizama.net")
+  (setq easy-hugo-previewtime "300")
+  :bind ("C-c C-e" . easy-hugo))
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -306,12 +309,6 @@
  '(helm-M-x-use-completion-styles nil t)
  '(helm-completion-style (quote emacs))
  '(helm-split-window-inside-p t)
- '(org-agenda-files
-   (quote
-    ("~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/Notes/projects.org" "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/Notes/manuales.org" "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/Notes/inbox.org" "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/Notes/howtos.org" "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/Notes/blogs.org" "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/Notes/notes.org" "~/Library/Mobile Documents/iCloud~com~appsonthemove~beorg/Documents/Notes/agenda.org")))
- '(package-selected-packages
-   (quote
-    (treemacs-all-the-icons org-bullets magithub multi-vterm vterm elixir-yasnippets yasnippet-snippets autopair yasnippet dashboard treemacs-magit treemacs-evil treemacs projectile git-gutter elixir-mode web-mode markdown-mode helm evil-leader evil-nerd-commenter evil company exec-path-from-shell counsel-fzf counsel-ag counsel zoom-window magit doom-themes doom-modeline pbcopy better-defaults use-package)))
  '(projectile-completion-system (quote helm))
  '(projectile-keymap-prefix "p")
  '(projectile-switch-project-action (quote helm-ls-git-ls))
