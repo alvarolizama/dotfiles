@@ -5,11 +5,11 @@
   (package-initialize)
   (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
   )
-
-  (package-refresh-contents)
   (package-install 'use-package)
-
 (setq package-check-signature nil)
+
+(when (not package-archive-contents)
+  (package-refresh-contents))
 
 (when (not package-archive-contents)
   (package-refresh-contents))
@@ -20,7 +20,13 @@
 (eval-when-compile
   (require 'use-package))
 
-;; Base config
+;; Quelpa to install plugins from github
+(use-package quelpa-use-package
+  :ensure t
+  :init (setq quelpa-update-melpa-p nil)
+  :config (quelpa-use-package-activate-advice))
+
+;; Disable startup message
 (setq inhibit-startup-message t)
 
 ;; Hide the bell in the center of screen
@@ -28,19 +34,36 @@
 (column-number-mode t)
 (global-hl-line-mode 1)
 
-;; Transparent title bar
-(when (memq window-system '(mac ns))
-  (add-to-list 'default-frame-alist '(ns-appearance . dark))
-  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t)))
+;; Hide line numbers on some modes 
+(global-display-line-numbers-mode 1)
+(add-hook 'notdeft-mode-hook
+          (lambda (&optional dummy)
+            (display-line-numbers-mode -1)))
+(add-hook 'vterm-mode-hook
+          (lambda (&optional dummy)
+            (display-line-numbers-mode -1)))
+(add-hook 'dired-mode-hook
+          (lambda (&optional dummy)
+            (display-line-numbers-mode -1)))
 
-;; line numbers
-(global-display-line-numbers-mode)
+;; Keybinds
+(global-set-key (kbd "C-c t") 'multi-vterm-dedicated-toggle)
+(global-set-key (kbd "C-c v t") 'multi-vterm)
+(global-set-key (kbd "C-c v p") 'multi-vterm-prev)
+(global-set-key (kbd "C-c v n") 'multi-vterm-next)
+(global-set-key (kbd "C-c ]") 'counsel-fzf)
+(global-set-key (kbd "C-c [") 'counsel-ag)
+(global-set-key (kbd "C-c b s") 'counsel-switch-buffer)
+(global-set-key (kbd "C-c b o") 'counsel-switch-buffer-other-window)
+(global-set-key (kbd "C-c f d") 'counsel-dired)
+(global-set-key (kbd "C-c f r") 'counsel-recentf)
+(global-set-key (kbd "C-c o c") 'counsel-org-capture)
 
 ;; Fix size of scroll
 (setq scroll-step 1
       scroll-conservatively  10000)
 
-;; Fira Code
+;; Fira Code setup
 (when (window-system)
   (set-frame-font "Fira Code"))
 (let ((alist '((33 . ".\\(?:\\(?:==\\|!!\\)\\|[!=]\\)")
@@ -66,8 +89,7 @@
                (119 . ".\\(?:ww\\)")
                (123 . ".\\(?:-\\)")
                (124 . ".\\(?:\\(?:|[=|]\\)\\|[=>|]\\)")
-               (126 . ".\\(?:~>\\|~~\\|[>=@~-]\\)")
-               )
+               (126 . ".\\(?:~>\\|~~\\|[>=@~-]\\)"))
              ))
   (dolist (char-regexp alist)
     (set-char-table-range composition-function-table (car char-regexp)
@@ -82,32 +104,37 @@
 ;; Disable auto save
 (setq auto-save-default nil)
 
+;; Electric pair
+(electric-pair-mode nil)
+(setq electric-pair-preserve-balance nil)
 
-;; Packages
-(use-package exec-path-from-shell
+;; Copypaste
+(setq x-select-enable-clipboard t)
+
+;; Languages support
+(use-package web-mode
+  :ensure t
+  :custom
+  (web-mode-enable-current-element-highlight t)
+  (web-mode-enable-current-column-highlight t)
+  :mode (("\\.html\\'" . web-mode)
+         ("\\.html.eex\\'" . web-mode)
+         ("\\.html.leex\\'" . web-mode)))
+
+(use-package elixir-mode
   :ensure t
   :config
-  (when (memq window-system '(mac ns))
-    (exec-path-from-shell-initialize)))
+  (add-hook 'elixir-mode-hook
+          (lambda () (add-hook 'before-save-hook 'elixir-format nil t))))
 
-(use-package better-defaults
-  :ensure t
-  :config
-  (menu-bar-mode 1))
 
+;; Theme & Styles 
 (use-package doom-themes
   :ensure t
   :config
   (setq doom-themes-enable-bold t
         doom-themes-enable-italic t)
-  (load-theme 'doom-tomorrow-night t))
-
-(use-package zoom-window
-  :ensure t
-  :config
-  (global-set-key (kbd "C-x C-z") 'zoom-window-zoom)
-  (custom-set-variables
-   '(zoom-window-mode-line-color "Black")))
+  (load-theme 'doom-dark+ t))
 
 (use-package doom-modeline
   :ensure t
@@ -117,73 +144,63 @@
   (doom-modeline-height 25)
   (doom-modeline-indent-info t)
   (doom-modeline-github t)
+  :config
+  (setq doom-modeline-buffer-file-name-style 'relative-to-project)
+  (setq doom-modeline-workspace-name t)
+
   :hook
   (after-init . doom-modeline-mode))
 
 (use-package dashboard
   :ensure t
   :config
-  (setq dashboard-banner-logo-title "Welcome to a new coding session!")
-  (setq dashboard-center-content t)
-  (setq dashboard-startup-banner 'logo)
-  (setq dashboard-set-footer nil)
-  (setq dashboard-items '((recents . 10)))
+  (setq dashboard-banner-logo-title "Welcome to a new coding session!"
+        dashboard-center-content t
+        dashboard-startup-banner 'logo
+        dashboard-set-footer nil
+        dashboard-items '((recents . 10)))
   (dashboard-setup-startup-hook))
 
-(use-package helm
-  :ensure t
-  :diminish ""
-  :custom
-  (helm-M-x-use-completion-styles nil)
-  (helm-split-window-inside-p t)
-  :bind (:map helm-map
-              ("<tab>" . 'helm-execute-persistent-action))
-  :config
-  (require 'helm-config)
-  (helm-mode 1))
-
-(with-eval-after-load 'helm
-  (add-hook 'helm-major-mode-hook
-                (lambda ()
-                (setq auto-composition-mode nil)))
-  (add-to-list 'display-buffer-alist
-               '("\\`\\*helm.*\\*\\'"
-                 (display-buffer-in-side-window)
-                 (inhibit-same-window . t)
-                 (window-height . 0.4))))
-
-(use-package evil
+(use-package git-gutter
   :ensure t
   :config
-  (evil-mode 1)
-  (modify-syntax-entry ?_ "w")
-  (add-hook 'prog-mode-hook #'(lambda ()
-                                (modify-syntax-entry ?_ "w")))
-  (use-package evil-nerd-commenter
-    :ensure t
-    :config
-    (evilnc-default-hotkeys)
-    (global-set-key (kbd "C-\-") 'evilnc-comment-operator))
-  (use-package evil-leader
-    :ensure t
-    :config
-    (global-evil-leader-mode)
-    (evil-leader/set-key
-      "SPC" 'helm-M-x
-      "[" 'counsel-fzf
-      "]" 'counsel-ag
-      "b" 'counsel-buffer-or-recentf
-      ";" 'cd
-      "'" 'magit
-      "a" 'org-agenda
-      "r" 'counsel-bookmark
-      "t" 'multi-vterm-projectile
-      "p" 'treemacs
-      "d" 'make-directory
-      "f" 'find-file
-      "z" 'zoom-window-zoom
-      "n" 'zoom-window-next
-      )))
+  (global-git-gutter-mode 1)
+)
+(use-package highlight-indent-guides
+  :ensure t
+  :config
+  (setq highlight-indent-guides-method 'column
+        highlight-indent-guides-auto-enabled t)
+  (set-face-background 'highlight-indent-guides-even-face "dimgray")
+  (set-face-foreground 'highlight-indent-guides-character-face "dimgray")
+  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode))
+
+
+;; Core Tools
+(use-package better-defaults
+  :ensure t
+  :config
+  (menu-bar-mode 1))
+
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (when (memq window-system '(mac ns))
+    (exec-path-from-shell-initialize)))
+
+(use-package zoom-window
+  :ensure t
+  :config
+  (global-set-key (kbd "C-x C-z") 'zoom-window-zoom)
+  (custom-set-variables
+   '(zoom-window-mode-line-color "Black")))
+
+(use-package projectile
+  :ensure t
+  :config
+  (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+  (projectile-mode +1))
 
 (use-package company
   :ensure t
@@ -193,6 +210,31 @@
         company-minimum-prefix-length 3)
   :hook (after-init . global-company-mode))
 
+(use-package which-key
+  :ensure t
+  :diminish ""
+  :config
+  (which-key-mode)
+  (which-key-setup-minibuffer))
+
+(use-package counsel
+  :ensure t)
+
+(use-package magit
+  :ensure t)
+
+(use-package magithub
+  :ensure t)
+
+(use-package yasnippet
+  :ensure t)
+
+(use-package yasnippet-snippets
+  :ensure t)
+
+(yas-global-mode 1)
+
+;; Terminal
 (use-package multi-vterm
   :ensure t
   :config
@@ -207,6 +249,7 @@
                                   (bind
                                       '(("C-<backspace>" . term-send-backward-kill-word)
                                       ("C-<delete>" . term-send-forward-kill-word)
+
                                       ("C-<left>" . term-send-backward-word)
                                       ("C-<right>" . term-send-forward-word)
                                       ("C-c C-j" . term-line-mode)
@@ -226,98 +269,29 @@
                             (add-to-list 'term-bind-key-alist bind))))
   (add-hook 'term-mode-hook '(lambda () (toggle-truncate-lines 1))))
 
-
+;; Org Mode
 (use-package org-bullets
   :ensure t
   :config
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
-(use-package git-gutter
+
+(use-package notdeft
   :ensure t
   :config
-  (global-git-gutter-mode 1))
+  (setq notdeft-extension "org"
+        notdeft-directories '(
+                              "~/Documents/Notes/wiki"
+                              "~/Documents/Notes/posts"
+                              "~/Documents/Notes/inbox"
+                              ))
+  :quelpa (notdeft
+           :fetcher github
+           :repo "hasu/notdeft")
+  :bind (:map notdeft-mode-map
+          ("C-q" . notdeft-quit)
+          ("C-r" . notdeft-refresh)
+          ))
 
-(use-package autopair
-  :ensure t
-  :config
-  (autopair-global-mode))
-
-(use-package yasnippet
-  :ensure t
-  :config
-  (yas-global-mode 1))
-
-(use-package web-mode
-  :ensure t
-  :custom
-  (web-mode-enable-current-element-highlight t)
-  (web-mode-enable-current-column-highlight t)
-  :mode (("\\.html\\'" . web-mode)
-         ("\\.html.eex\\'" . web-mode)
-         ("\\.html.leex\\'" . web-mode)))
-
-(use-package elixir-mode
-  :ensure t
-  :config
-  (add-hook 'elixir-mode-hook
-          (lambda () (add-hook 'before-save-hook 'elixir-format nil t))))
-
-(use-package which-key
-  :ensure t
-  :diminish ""
-  :config
-  (which-key-mode)
-  (which-key-setup-minibuffer))
-
-(use-package counsel
-  :ensure t)
-
-(use-package magit
-  :ensure t)
-
-(use-package magithub
-  :ensure t)
-
-(use-package treemacs-evil
-  :ensure t)
-
-(use-package treemacs-magit
-  :ensure t)
-
-(use-package treemacs-all-the-icons
-  :ensure t)
-
-(use-package easy-hugo
-  :ensure t
-  :init
-  (setq easy-hugo-basedir "~/Documents/Blog/")
-  (setq easy-hugo-postdir "content/posts")
-  (setq easy-hugo-url "https://alvarolizama.net")
-  (setq easy-hugo-previewtime "300")
-  :bind ("C-c C-e" . easy-hugo))
-
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(doom-modeline-github t)
- '(doom-modeline-height 25)
- '(doom-modeline-indent-info t)
- '(doom-modeline-modal-icon t)
- '(helm-M-x-use-completion-styles nil t)
- '(helm-completion-style (quote emacs))
- '(helm-split-window-inside-p t)
- '(projectile-completion-system (quote helm))
- '(projectile-keymap-prefix "p")
- '(projectile-switch-project-action (quote helm-ls-git-ls))
- '(web-mode-enable-current-column-highlight t t)
- '(web-mode-enable-current-element-highlight t t)
- '(zoom-window-mode-line-color "Black"))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(setq org-agenda-files "~/Documents/Notes/inbox")
+(setq org-archive-location "~/Documents/Notes/archive")
