@@ -1,0 +1,38 @@
+# Dotfiles
+
+## Install dependencies
+
+- Install OH My ZSH from https://ohmyz.sh
+- Install dependencies
+
+      brew install ctags the_silver_searcher fzf vim asdf neovim starship cmake direnv
+      brew install --cask emacs-mac-spacemacs-icon
+
+## Clone dotfiles
+
+```
+git clone --bare https://github.com/alvarolizama/dotfiles.git $HOME/.dotfiles
+alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+dotfiles checkout
+
+```
+
+## Usage
+```
+dotfiles status
+dotfiles add .vimrc
+dotfiles commit -m "Add vimrc"
+dotfiles add .bashrc
+dotfiles commit -m "Add bashrc"
+dotfiles push
+```
+
+## Start you own dotfile repo
+
+```
+git init --bare $HOME/.dotfiles
+alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME
+dotfiles config --local status.showUntrackedFiles no
+```
+
+
