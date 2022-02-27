@@ -1,24 +1,37 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
+call plug#begin(stdpath('data') . '/plugged')
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " General Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"""" Themes
+Plug 'dracula/vim'
+
 """" Files Navigation
 Plug 'junegunn/fzf' | Plug 'junegunn/fzf.vim'
-Plug 'kshenoy/vim-signature'
+
+"""" Syntax
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
+"""" Terminal
+Plug 'voldikss/vim-floaterm'
+
+"""" Snippets
+Plug 'L3MON4D3/LuaSnip'
+Plug 'rafamadriz/friendly-snippets'
+
+"""" Status & tab line
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 """" Code Plugins
 Plug 'Raimondi/delimitMate'
 Plug 'docunext/closetag.vim'
-Plug 'tpope/vim-commentary'
-
-"""" Snippets
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
+Plug 'mhinz/vim-mix-format'
 
 """" Git
 Plug 'mhinz/vim-signify'
@@ -27,59 +40,16 @@ Plug 'cohama/agit.vim'
 
 """" Eye candy
 Plug 'glepnir/dashboard-nvim'
-Plug 'Yggdroot/indentLine'
 Plug 'kien/rainbow_parentheses.vim'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'ap/vim-css-color'
+Plug 'RRethy/vim-illuminate'
 
-"""" Themes
-Plug 'dracula/vim'
-
-"""" Syntax
-Plug 'sheerun/vim-polyglot'
-Plug 'slashmili/alchemist.vim'
 
 """" Other plugins
 Plug 'duggiefresh/vim-easydir'
-Plug 'terryma/vim-multiple-cursors'
-Plug 'mhinz/vim-mix-format'
-Plug 'voldikss/vim-floaterm'
 
 
 call plug#end()
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Key Maps
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-map <Space> i
-
-map <Leader>gg <Esc>ggvG=<CR>
-map <Leader>\ <Esc>:Files<CR>
-map <Leader>] <Esc>:Explore<CR>
-map <Leader>[ <Esc>:Buffers<CR>
-map <Leader>; <Esc>:Ag<CR>
-map <Leader>' <Esc>:GFiles?<CR>
-map <Leader>. <Esc>:BLines<CR>
-map <Leader>/ <Esc>:Lines<CR>
-map <Leader>= <Esc>:Commits<CR>
-map <Leader>- <Esc>:BCommits<CR>
-
-inoremap jj <esc>
-inoremap jk <esc>
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Autocommands
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-au BufRead,BufNewFile *.html set filetype=html.htmldjango
-au BufRead,BufNewFile *.py set filetype=python.django
-"au BufWritePost *.exs,*.ex silent :!mix format %
-au FileType python set shiftwidth=4 tabstop=4 softtabstop=4 colorcolumn=80 completeopt-=preview
-au FileType elixir set colorcolumn=80
-au BufWritePre * :%s/\s\+$//e
-au VimEnter * RainbowParenthesesToggleAll
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -113,7 +83,6 @@ set number
 set wildmenu
 set novisualbell
 set mouse=a
-set ttymouse=sgr
 set cmdheight=1
 set linespace=0
 set laststatus=2
@@ -139,20 +108,8 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*deps/*,*_build/*,*node_modules/*
 " Performance
 set ttyfast
 set lazyredraw
-set ttyscroll=3
 set regexpengine=1
 set synmaxcol=256
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" VIM Options
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:netrw_localrmdir="rm -rf"
-let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+'
-let g:netrw_liststyle = 1
-let g:netrw_banner = 0
-let mapleader = "\\"
-let g:loaded_matchparen=1
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -164,6 +121,72 @@ syntax on
 set background=dark
 hi Comment cterm=italic
 colorscheme dracula
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Common VIM Options
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:netrw_localrmdir="rm -rf"
+let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+'
+let g:netrw_liststyle = 1
+let g:netrw_banner = 0
+let mapleader = "\\"
+let g:loaded_matchparen=1
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Common Key Maps
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+map <Space> i
+
+map <Leader>gg <Esc>ggvG=<CR>
+map <Leader>\ <Esc>:Files<CR>
+map <Leader>] <Esc>:Explore<CR>
+map <Leader>[ <Esc>:Buffers<CR>
+map <Leader>; <Esc>:Ag<CR>
+map <Leader>' <Esc>:GFiles?<CR>
+map <Leader>. <Esc>:BLines<CR>
+map <Leader>/ <Esc>:Lines<CR>
+map <Leader>= <Esc>:Commits<CR>
+map <Leader>- <Esc>:BCommits<CR>
+
+inoremap jj <esc>
+inoremap jk <esc>
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Common Autocommands
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+au BufRead,BufNewFile *.html set filetype=html.htmldjango
+au BufRead,BufNewFile *.py set filetype=python.django
+"au BufWritePost *.exs,*.ex silent :!mix format %
+au FileType python set shiftwidth=4 tabstop=4 softtabstop=4 colorcolumn=80 completeopt-=preview
+au FileType elixir set colorcolumn=80
+au BufWritePre * :%s/\s\+$//e
+au VimEnter * RainbowParenthesesToggleAll
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Dashboard Options
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:dashboard_default_executive ='fzf'
+nmap <Leader>ss :<C-u>SessionSave<CR>
+nmap <Leader>sl :<C-u>SessionLoad<CR>
+nnoremap <silent> <Leader>fh :DashboardFindHistory<CR>
+nnoremap <silent> <Leader>ff :DashboardFindFile<CR>
+nnoremap <silent> <Leader>tc :DashboardChangeColorscheme<CR>
+nnoremap <silent> <Leader>fa :DashboardFindWord<CR>
+nnoremap <silent> <Leader>fb :DashboardJumpMark<CR>
+nnoremap <silent> <Leader>cn :DashboardNewFile<CR>
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Floaterm
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:floaterm_keymap_new    = '<leader>tc'
+let g:floaterm_keymap_prev   = '<leader>tp'
+let g:floaterm_keymap_next   = '<leader>tn'
+let g:floaterm_keymap_toggle = '<leader>tt'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -193,22 +216,3 @@ let g:mix_format_silent_errors = 1
 " FZF Options
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:fzf_preview_window = 'right:60%'
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Floaterm
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:floaterm_keymap_new    = '<leader>tc'
-let g:floaterm_keymap_prev   = '<leader>tp'
-let g:floaterm_keymap_next   = '<leader>tn'
-let g:floaterm_keymap_toggle = '<leader>tt'
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Ultisnips
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-
-

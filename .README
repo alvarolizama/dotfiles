@@ -5,7 +5,7 @@
 - Install OH My ZSH from https://ohmyz.sh
 - Install dependencies
 
-      brew install ctags the_silver_searcher fzf vim asdf neovim starship cmake direnv
+      brew install ctags the_silver_searcher fzf asdf neovim starship cmake direnv
       brew install --cask emacs-mac-spacemacs-icon
 
 ## Clone dotfiles

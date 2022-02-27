@@ -20,3 +20,4 @@ BASE16_SHELL="$HOME/.config/base16-shell/"
 
 # Alias
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias vim='nvim'
