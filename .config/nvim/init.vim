@@ -13,16 +13,19 @@ Plug 'dracula/vim'
 
 """" Files Navigation
 Plug 'junegunn/fzf' | Plug 'junegunn/fzf.vim'
+Plug 'kyazdani42/nvim-web-devicons' " for file icons
+Plug 'kyazdani42/nvim-tree.lua'
 
 """" Syntax
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'elixir-editors/vim-elixir'
+"Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 """" Terminal
 Plug 'voldikss/vim-floaterm'
 
 """" Snippets
-Plug 'L3MON4D3/LuaSnip'
-Plug 'rafamadriz/friendly-snippets'
+Plug 'dcampos/nvim-snippy'
+Plug 'honza/vim-snippets'
 
 """" Status & tab line
 Plug 'vim-airline/vim-airline'
@@ -44,12 +47,17 @@ Plug 'kien/rainbow_parentheses.vim'
 Plug 'ap/vim-css-color'
 Plug 'RRethy/vim-illuminate'
 
-
 """" Other plugins
 Plug 'duggiefresh/vim-easydir'
+Plug 'ryanolsonx/vim-xit'
 
 
 call plug#end()
+
+
+lua << EOF
+require'nvim-tree'.setup()
+EOF
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -159,7 +167,6 @@ inoremap jk <esc>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 au BufRead,BufNewFile *.html set filetype=html.htmldjango
 au BufRead,BufNewFile *.py set filetype=python.django
-"au BufWritePost *.exs,*.ex silent :!mix format %
 au FileType python set shiftwidth=4 tabstop=4 softtabstop=4 colorcolumn=80 completeopt-=preview
 au FileType elixir set colorcolumn=80
 au BufWritePre * :%s/\s\+$//e
@@ -194,8 +201,8 @@ let g:floaterm_keymap_toggle = '<leader>tt'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:airline_powerline_fonts = 1
 let g:airline_theme='dracula'
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#formatter = 'unique_tail'
+"let g:airline#extensions#tabline#enabled = 1
+"let g:airline#extensions#tabline#formatter = 'unique_tail'
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -216,3 +223,16 @@ let g:mix_format_silent_errors = 1
 " FZF Options
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:fzf_preview_window = 'right:60%'
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Snippy Options
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+imap <expr> <Tab> snippy#can_expand_or_advance() ? '<Plug>(snippy-expand-or-advance)' : '<Tab>'
+imap <expr> <S-Tab> snippy#can_jump(-1) ? '<Plug>(snippy-previous)' : '<S-Tab>'
+smap <expr> <Tab> snippy#can_jump(1) ? '<Plug>(snippy-next)' : '<Tab>'
+smap <expr> <S-Tab> snippy#can_jump(-1) ? '<Plug>(snippy-previous)' : '<S-Tab>'
+xmap <Tab> <Plug>(snippy-cut-text)
+
+
+

@@ -9,3 +9,5 @@
 	gpgsign = true
 [github]
 	user = alvarolizama
+[init]
+	defaultBranch = main
