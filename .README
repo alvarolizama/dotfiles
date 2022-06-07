@@ -1,12 +1,13 @@
-# Dotfiles
+# Dotfiles and local setup
 
 ## Install dependencies
 
 - Install OH My ZSH from https://ohmyz.sh
-- Install dependencies
+- Install dependencies usin brew
 
-      brew install ctags the_silver_searcher fzf asdf neovim starship cmake direnv
-      brew install --cask emacs-mac-spacemacs-icon
+      brew install asdf autoconf openssl coreutils fop wxwidgets \
+             automake libyaml readline libxslt libtool \
+             unixodbc unzip curl sqlite3 ctags neovim starship cmake direnv
 
 ## Clone dotfiles
 
@@ -35,4 +36,23 @@ alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME
 dotfiles config --local status.showUntrackedFiles no
 ```
 
+## Install Erlang / Elixir / NodeJS
+
+      asdf plugin add erlang
+      asdf plugin add elixir
+      asdf plugin add nodejs
+      asdf install erlang 24.3.4
+      asdf global erlang 24.3.4
+      asdf reshim erlang
+      asdf install elixir 1.13
+      asdf global elixir 1.13
+      asdf reshim elixir
+      asdf install nodejs 16.15.1
+      asdf global nodejs 16.15.1
+      asdf reshim nodejs
+
+## Install Phoenix
+
+      mix local.hex
+      mix archive.install hex phx_new
 
