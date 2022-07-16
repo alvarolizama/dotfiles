@@ -2,12 +2,14 @@
 
 ## Install dependencies
 
+- Install BASE16 and choice a theme
 - Install OH My ZSH from https://ohmyz.sh
 - Install dependencies usin brew
 
       brew install asdf autoconf openssl coreutils fop wxwidgets \
              automake libyaml readline libxslt libtool \
-             unixodbc unzip curl sqlite3 ctags neovim starship cmake direnv
+             unixodbc unzip curl sqlite3 ctags neovim starship cmake direnv \
+             bat nb
 
 ## Clone dotfiles
 
@@ -41,11 +43,11 @@ dotfiles config --local status.showUntrackedFiles no
       asdf plugin add erlang
       asdf plugin add elixir
       asdf plugin add nodejs
-      asdf install erlang 24.3.4
-      asdf global erlang 24.3.4
+      asdf install erlang latest
+      asdf global erlang latest
       asdf reshim erlang
-      asdf install elixir 1.13
-      asdf global elixir 1.13
+      asdf install elixir latest
+      asdf global elixir latest
       asdf reshim elixir
       asdf install nodejs 16.15.1
       asdf global nodejs 16.15.1
