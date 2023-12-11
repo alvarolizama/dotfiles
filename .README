@@ -6,10 +6,7 @@
 - Install OH My ZSH from https://ohmyz.sh
 - Install dependencies usin brew
 
-      brew install asdf autoconf openssl coreutils fop wxwidgets \
-             automake libyaml readline libxslt libtool \
-             unixodbc unzip curl sqlite3 ctags neovim starship cmake direnv \
-             bat nb
+      brew install asdf direnv starship flyctl git go htop jq lsd sqlite3
 
 ## Clone dotfiles
 
