@@ -6,7 +6,7 @@
 - Install OH My ZSH from https://ohmyz.sh
 - Install dependencies usin brew
 
-      brew install asdf direnv starship flyctl git go htop jq lsd
+      brew install asdf direnv starship git htop jq lsd
 
 ## Clone dotfiles
 
