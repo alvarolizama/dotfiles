@@ -6,7 +6,7 @@
 - Install OH My ZSH from https://ohmyz.sh
 - Install dependencies usin brew
 
-      brew install asdf direnv starship git htop jq lsd
+      brew install asdf direnv git htop jq lsd neovim ollama starship tree-sitter 
 
 ## Clone dotfiles
 
