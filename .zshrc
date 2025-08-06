@@ -1,6 +1,6 @@
 # OMHYZSH
 ZSH=~/.oh-my-zsh
-plugins=(brew common-aliases docker docker-compose git github mix macos web-search)
+plugins=(brew common-aliases git github mix macos web-search)
 source $ZSH/oh-my-zsh.sh
 source $HOME/.extra.sh
 
