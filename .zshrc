@@ -4,9 +4,6 @@ plugins=(brew common-aliases git github mix macos web-search)
 source $ZSH/oh-my-zsh.sh
 source $HOME/.extra.sh
 
-# Direnv
-eval "$(direnv hook zsh)"
-
 # Startship prompt
 eval "$(starship init zsh)"
 
@@ -21,9 +18,5 @@ export KERL_CONFIGURE_OPTIONS="--disable-hipe --with-ssl=$(brew --prefix openssl
 export CPPFLAGS="-I$(brew --prefix unixodbc)/include"
 export LDFLAGS="-L$(brew --prefix unixodbc)/lib"
 
-# ASDF
-. /opt/homebrew/opt/asdf/libexec/asdf.sh
-
 # Alias
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-alias vim='nvim'
