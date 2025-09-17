@@ -34,24 +34,3 @@ git init --bare $HOME/.dotfiles
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME
 dotfiles config --local status.showUntrackedFiles no
 ```
-
-## Install Erlang / Elixir / NodeJS
-
-      asdf plugin add erlang
-      asdf plugin add elixir
-      asdf plugin add nodejs
-      asdf install erlang latest
-      asdf global erlang latest
-      asdf reshim erlang
-      asdf install elixir latest
-      asdf global elixir latest
-      asdf reshim elixir
-      asdf install nodejs 16.15.1
-      asdf global nodejs 16.15.1
-      asdf reshim nodejs
-
-## Install Phoenix
-
-      mix local.hex
-      mix archive.install hex phx_new
-
