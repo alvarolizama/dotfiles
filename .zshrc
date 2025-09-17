@@ -8,7 +8,7 @@ source $HOME/.extra.sh
 eval "$(starship init zsh)"
 
 # Mise
-eval "$(~/.local/bin/mise activate zsh)"
+eval "$(/opt/homebrew/bin/mise activate zsh)"
 
 
 BASE16_SHELL="$HOME/.config/base16-shell/"
