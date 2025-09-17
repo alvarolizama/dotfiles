@@ -6,7 +6,7 @@
 - Install OH My ZSH from https://ohmyz.sh
 - Install dependencies usin brew
 
-      brew install git htop jq lsd starship 
+      brew install git htop jq lsd mise starship 
 
 ## Clone dotfiles
 
