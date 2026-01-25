@@ -6,7 +6,7 @@
 - Install OH My ZSH from https://ohmyz.sh
 - Install dependencies usin brew
 
-      brew install git gh htop jq lsd mise neovim ripgrep sqlite starship tmux
+      brew install git gh htop jq lsd mise neovim ripgrep sqlite starship tmux reattach-to-user-namespace
 
 ## Clone dotfiles
 
